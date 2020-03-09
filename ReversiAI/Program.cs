@@ -10,14 +10,54 @@ namespace ReversiAI
     {
         static void Main(string[] args)
         {
-
-            Board board = new Board();
-            Console.WriteLine("Enter \"exit\" to exit\n");
-            Console.WriteLine(board.ToString());
+            char playerSymbol;
+            int maxDepth;
+            Board board;
             MiniMaxClass miniMax = new MiniMaxClass();
+            Console.WriteLine("Enter \"exit\" to exit\n");
+
+            Console.WriteLine("Select symbol to play, enter O or X:");
+            string tempS = Console.ReadLine() + "";
+            if (tempS.ToCharArray()[0] == 'X')
+            {
+                playerSymbol = 'X';
+            }
+            else if (tempS.ToCharArray()[0] == 'O')
+            {
+                playerSymbol = 'O';
+            }
+            else
+            {
+                Console.WriteLine("Invalid symbol!");
+                Console.ReadKey();
+                return;
+            }
+
+
+            Console.WriteLine("Select AI depth:");
+            maxDepth = Console.ReadLine().ToCharArray()[0]-48;
+
+            Console.WriteLine("Do you want to go first or second? (input \"first\" or \"second\"):");
+            string order = Console.ReadLine();
+            if (order.Equals("first"))
+            {
+                board = new Board(playerSymbol);
+            } else
+            {
+                if (playerSymbol == 'O')
+                {
+                    board = new Board('X');
+                    board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
+                }
+                else {
+                    board = new Board('O');
+                    board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
+                }
+                Console.WriteLine(board.ToString());
+            }
 
             string input = "";
-            while (true)
+            while (!board.IsTerminal())
             {
                 Console.WriteLine("Enter move(format: x y)");
                 input = Console.ReadLine() + "";
@@ -34,13 +74,20 @@ namespace ReversiAI
                 } 
                 else
                 {
-                    Move temp = new Move(inputArr[0] - 49, inputArr[2] - 49, 'O');
+                    Move temp = new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol);
                     if (board.IsMoveValid(temp))
                     {
-                        board.MakeMove(new Move(inputArr[0] - 49, inputArr[2] - 49, 'O'));
+                        board.MakeMove(new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol));
                         Console.WriteLine(board.ToString());
                         //AI moves
-                        board.MakeMove(miniMax.MiniMax(board, 'X', 8, 0).Item2);
+                        if (playerSymbol == 'O')
+                        {
+                            board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
+                        }
+                        else
+                        {
+                            board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
+                        }
                         Console.WriteLine(board.ToString());
                     } else
                     {

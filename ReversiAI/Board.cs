@@ -28,6 +28,11 @@ namespace ReversiAI
             board[4, 3] = 'O';
         }
 
+        public Board(char playerSymbol) : this()
+        {
+            currentPlayer = playerSymbol;
+        }
+
         public Board(char[,] board) : this()
         {
             for (int i = 0; i < 8; i++)
@@ -48,6 +53,7 @@ namespace ReversiAI
                     this.board[i, j] = oldBoard.GetBoardAsCharArray()[i, j];
                 }
             }
+            this.currentPlayer = oldBoard.currentPlayer;
         }
 
         public char[,] GetBoardAsCharArray()
@@ -80,6 +86,7 @@ namespace ReversiAI
 
         public void MakeMove(Move move)
         {
+            //TODO Add flip logic!
             if (IsMoveValid(move))
             {
                 board[move.x, move.y] = move.symbol;
@@ -96,8 +103,6 @@ namespace ReversiAI
 
         public bool IsMoveValid(Move move)
         {
-            //TODO
-
             int x = move.x;
             int y = move.y;
             bool enemyInLine = false;
@@ -123,13 +128,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check top left diagonal from the desired move
             while (y > 0 && x > 0)
@@ -137,16 +142,17 @@ namespace ReversiAI
                 y--;
                 x--;
                 if (board[x, y] == '.') break;
-                if (board[x,y] == enemy)
+                if (board[x, y] == enemy)
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x,y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check top right diagonal from the desired move
             while (y < 7 && x > 0)
@@ -158,12 +164,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check right horizontal from the desired move
             while (y<7)
@@ -174,12 +181,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check bottom right diagonal from the desired move
             while (y < 7 && x < 7)
@@ -191,12 +199,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check bottom vertical from the desired move
             while (x < 7)
@@ -207,12 +216,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check bottom left diagonal from the desired move
             while (x < 7 && y > 0)
@@ -224,12 +234,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
+            //if (enemyInLine && allyInLine) return true;
             enemyInLine = false; x = move.x; y = move.y;
             // Check left horizontal from the desired move
             while (y > 0)
@@ -240,13 +251,13 @@ namespace ReversiAI
                 {
                     enemyInLine = true;
                 }
-                if (enemyInLine && board[x, y] == move.symbol)
+                else if (enemyInLine && board[x, y] == move.symbol)
                 {
-                    allyInLine = true;
+                    return true;
                 }
+                else break;
             }
-            if (enemyInLine && allyInLine) return true;
-            enemyInLine = false; x = move.x; y = move.y;
+            //if (enemyInLine && allyInLine) return true;
 
             return false;
         }
