@@ -53,8 +53,8 @@ namespace ReversiAI
                     board = new Board('O');
                     board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
                 }
-                Console.WriteLine(board.ToString());
             }
+            Console.WriteLine(board.ToString());
 
             string input = "";
             while (!board.IsTerminal())
@@ -80,6 +80,7 @@ namespace ReversiAI
                         board.MakeMove(new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol));
                         Console.WriteLine(board.ToString());
                         //AI moves
+                        Console.WriteLine("AI moves...");
                         if (playerSymbol == 'O')
                         {
                             board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
@@ -96,6 +97,20 @@ namespace ReversiAI
                 }
 
             }
+            int humanScore = board.GetScore(playerSymbol);
+            Console.WriteLine("You got " + humanScore + "points!");
+            int AIScore = 0;
+            if (playerSymbol == 'O')
+            {
+                AIScore = board.GetScore('X');
+            }
+            else
+            {
+                AIScore = board.GetScore('O');
+            }
+            if (AIScore > humanScore) Console.WriteLine("Sorry, the AI won!");
+            else Console.WriteLine("Congratulations, you won!");
+            Console.ReadKey();
         }
     }
 }

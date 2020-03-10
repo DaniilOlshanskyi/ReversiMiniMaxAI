@@ -90,6 +90,159 @@ namespace ReversiAI
             if (IsMoveValid(move))
             {
                 board[move.x, move.y] = move.symbol;
+                int x = move.x;
+                int y = move.y;
+                bool enemyInLine = true;
+                bool goBack;
+                // Identify enemy symbol (color)
+                char enemy = 'X';
+                if (move.symbol == 'X')
+                {
+                    enemy = 'O';
+                }
+
+                // Check top vertical from the desired move
+                while (x > 0)
+                {
+                    x--;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x)
+                        {
+                            board[x, y] = move.symbol;
+                            x++;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check top left diagonal from the desired move
+                while (y > 0 && x > 0)
+                {
+                    y--;
+                    x--;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x && y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            x++;
+                            y++;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check top right diagonal from the desired move
+                while (y < 7 && x > 0)
+                {
+                    x--;
+                    y++;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x && y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            x++;
+                            y--;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check right horizontal from the desired move
+                while (y < 7)
+                {
+                    y++;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            y--;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check bottom right diagonal from the desired move
+                while (y < 7 && x < 7)
+                {
+                    y++;
+                    x++;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x && y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            x--;
+                            y--;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check bottom vertical from the desired move
+                while (x < 7)
+                {
+                    x++;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x)
+                        {
+                            board[x, y] = move.symbol;
+                            x--;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check bottom left diagonal from the desired move
+                while (x < 7 && y > 0)
+                {
+                    x++;
+                    y--;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (x != move.x && y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            x--;
+                            y++;
+                        }
+                        break;
+                    }
+                }
+                //if (enemyInLine && allyInLine) return true;
+                enemyInLine = false; x = move.x; y = move.y;
+                // Check left horizontal from the desired move
+                while (y > 0)
+                {
+                    y--;
+                    if (board[x, y] == '.') break;
+                    if (board[x, y] == move.symbol)
+                    {
+                        while (y != move.y)
+                        {
+                            board[x, y] = move.symbol;
+                            y++;
+                        }
+                        break;
+                    }
+                }
                 if (currentPlayer == 'O')
                 {
                     currentPlayer = 'X';
