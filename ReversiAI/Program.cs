@@ -84,12 +84,17 @@ namespace ReversiAI
                         if (playerSymbol == 'O')
                         {
                             board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
+                            Console.WriteLine(board.ToString());
+                            Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
+                            Console.WriteLine("AI score: " + board.GetScore('X'));
                         }
                         else
                         {
                             board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
+                            Console.WriteLine(board.ToString());
+                            Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
+                            Console.WriteLine("AI score: " + board.GetScore('O'));
                         }
-                        Console.WriteLine(board.ToString());
                     } else
                     {
                         Console.WriteLine("Invalid move!");
