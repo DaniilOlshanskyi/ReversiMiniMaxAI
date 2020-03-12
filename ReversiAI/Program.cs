@@ -80,13 +80,45 @@ namespace ReversiAI
                 } 
                 else
                 {
-                    // Try to make player move, display message if it is wrong 
-                    Move temp = new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol);
-                    if (board.IsMoveValid(temp))
+                    // If a player has a move - move
+                    if (!board.IsTerminal(playerSymbol))
                     {
-                        // The move is correct, put it on the board
-                        board.MakeMove(new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol));
-                        Console.WriteLine(board.ToString());
+                        // Try to make player move, display message if it is wrong 
+                        Move temp = new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol);
+                        if (board.IsMoveValid(temp))
+                        {
+                            // The move is correct, put it on the board
+                            board.MakeMove(new Move(inputArr[0] - 49, inputArr[2] - 49, playerSymbol));
+                            Console.WriteLine(board.ToString());
+                            //AI makes a move with the symbol opposite to players one
+                            Console.WriteLine("AI moves...");
+                            // If AI has at least 1 move - try it
+                            if (playerSymbol == 'O' && !board.IsTerminal('X'))
+                            {
+                                // Make a move that the MiniMax returns
+                                board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
+                                Console.WriteLine(board.ToString());
+                                Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
+                                Console.WriteLine("AI score: " + board.GetScore('X'));
+                            }
+                            else if (!board.IsTerminal('O'))
+                            {
+                                // Make a move that the MiniMax returns
+                                board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
+                                Console.WriteLine(board.ToString());
+                                Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
+                                Console.WriteLine("AI score: " + board.GetScore('O'));
+                            }
+                            else Console.WriteLine("AI can't move!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid move!");
+                        }
+                    }
+                    else // Player has no moves, so AI makes a move instead
+                    {
+                        Console.WriteLine("You have no moves!");
                         //AI makes a move with the symbol opposite to players one
                         Console.WriteLine("AI moves...");
                         if (playerSymbol == 'O')
@@ -105,13 +137,13 @@ namespace ReversiAI
                             Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
                             Console.WriteLine("AI score: " + board.GetScore('O'));
                         }
-                    } else
-                    {
-                        Console.WriteLine("Invalid move!");
+
                     }
+                    
                 }
 
             }
+
             // The board is terminal, write out score
             int humanScore = board.GetScore(playerSymbol);
             Console.WriteLine("You got " + humanScore + "points!");

@@ -279,6 +279,8 @@ namespace ReversiAI
         /// <returns> True or false </returns>
         public bool IsMoveValid(Move move)
         {
+            if (move.x < 0 || move.x > 7 || move.y < 0 || move.y > 7) return false;
+
             int x = move.x;
             int y = move.y;
             bool enemyInLine = false;
@@ -450,6 +452,30 @@ namespace ReversiAI
                     if (board[i,j] == '.')
                     {
                         if (IsMoveValid(new Move(i, j, 'X')) || IsMoveValid(new Move(i, j, 'O')))
+                        {
+                            return false;
+                        }
+
+                    }
+                }
+            }
+            return true;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public bool IsTerminal(char symbol)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i, j] == '.')
+                    {
+                        if (IsMoveValid(new Move(i, j, symbol)))
                         {
                             return false;
                         }
