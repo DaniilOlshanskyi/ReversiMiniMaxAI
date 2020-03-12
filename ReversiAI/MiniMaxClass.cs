@@ -9,7 +9,7 @@ namespace ReversiAI
     class MiniMaxClass
     {
         //TOCHECK
-        public Tuple<int,Move> MiniMax(Board board,char player, int maxDepth, int currentDepth)
+        public Tuple<int,Move> MiniMax(Board board,char player, int maxDepth, int currentDepth, int alpha, int beta)
         {
             int bestScore;
             Move bestMove = new Move();
@@ -29,7 +29,7 @@ namespace ReversiAI
             foreach (Move move in board.GetMoves()) {
                 Board newBoard = new Board(board);
                 newBoard.MakeMove(move);
-                Tuple<int, Move> temp = MiniMax(newBoard,player, maxDepth, currentDepth + 1);
+                Tuple<int, Move> temp = MiniMax(newBoard,player, maxDepth, currentDepth + 1, alpha, beta);
                 if (board.currentPlayer == player)
                 {
                     if (temp.Item1 > bestScore)
@@ -37,6 +37,8 @@ namespace ReversiAI
                         bestScore = temp.Item1;
                         bestMove = move;
                     }
+                    alpha = Math.Max(alpha, bestScore);
+                    if (beta <= alpha) break;
                 } else
                 {
                     if (temp.Item1 < bestScore)
@@ -44,6 +46,8 @@ namespace ReversiAI
                         bestScore = temp.Item1;
                         bestMove = move;
                     }
+                    beta = Math.Min(beta, bestScore);
+                    if (beta <= alpha) break;
                 }
             }
             return new Tuple<int, Move>(bestScore, bestMove);

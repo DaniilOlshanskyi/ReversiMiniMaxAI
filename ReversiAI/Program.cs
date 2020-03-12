@@ -47,11 +47,11 @@ namespace ReversiAI
                 if (playerSymbol == 'O')
                 {
                     board = new Board('X');
-                    board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
+                    board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
                 }
                 else {
                     board = new Board('O');
-                    board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
+                    board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
                 }
             }
             Console.WriteLine(board.ToString());
@@ -83,14 +83,14 @@ namespace ReversiAI
                         Console.WriteLine("AI moves...");
                         if (playerSymbol == 'O')
                         {
-                            board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0).Item2);
+                            board.MakeMove(miniMax.MiniMax(board, 'X', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
                             Console.WriteLine(board.ToString());
                             Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
                             Console.WriteLine("AI score: " + board.GetScore('X'));
                         }
                         else
                         {
-                            board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0).Item2);
+                            board.MakeMove(miniMax.MiniMax(board, 'O', maxDepth, 0, int.MinValue, int.MaxValue).Item2);
                             Console.WriteLine(board.ToString());
                             Console.WriteLine("Your score: " + board.GetScore(playerSymbol));
                             Console.WriteLine("AI score: " + board.GetScore('O'));
