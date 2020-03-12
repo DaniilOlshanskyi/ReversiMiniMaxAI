@@ -11,6 +11,9 @@ namespace ReversiAI
         char[,] board;
         public char currentPlayer;
 
+        /// <summary>
+        /// Constructor to generate basic board according to conventions
+        /// </summary>
         public Board()
         {
             currentPlayer = 'O';
@@ -28,11 +31,19 @@ namespace ReversiAI
             board[4, 3] = 'O';
         }
 
+        /// <summary>
+        /// Constructor to generate basic board with a custom first one to move
+        /// </summary>
+        /// <param name="playerSymbol"> Symbol (color) that moves first </param>
         public Board(char playerSymbol) : this()
         {
             currentPlayer = playerSymbol;
         }
 
+        /// <summary>
+        /// Constructor with a custom board layout
+        /// </summary>
+        /// <param name="board"> Starting board </param>
         public Board(char[,] board) : this()
         {
             for (int i = 0; i < 8; i++)
@@ -44,6 +55,10 @@ namespace ReversiAI
             }
         }
 
+        /// <summary>
+        /// Copy constructor (from board object)
+        /// </summary>
+        /// <param name="oldBoard"> Board to copy </param>
         public Board(Board oldBoard) : this()
         {
             for (int i = 0; i < 8; i++)
@@ -56,11 +71,19 @@ namespace ReversiAI
             this.currentPlayer = oldBoard.currentPlayer;
         }
 
+        /// <summary>
+        /// Get the game board as char array
+        /// </summary>
+        /// <returns> Current playing board with char array</returns>
         public char[,] GetBoardAsCharArray()
         {
             return board;
         }
 
+        /// <summary>
+        /// Override of the ToString method to print out the class (print the board)
+        /// </summary>
+        /// <returns> Board string representation</returns>
         public override string ToString()
         {
             string s = "x\\y1 2 3 4 5 6 7 8 \n";
@@ -84,22 +107,24 @@ namespace ReversiAI
             return s;
         }
 
+        /// <summary>
+        /// Method to make a move on the current board
+        /// </summary>
+        /// <param name="move"> Move to be made </param>
         public void MakeMove(Move move)
         {
-            //TODO Add flip logic!
-            if (IsMoveValid(move))
+            if (IsMoveValid(move)) // Test if this is a valid move first
             {
                 board[move.x, move.y] = move.symbol;
                 int x = move.x;
                 int y = move.y;
-                bool enemyInLine = true;
-                bool goBack;
-                // Identify enemy symbol (color)
-                char enemy = 'X';
-                if (move.symbol == 'X')
-                {
-                    enemy = 'O';
-                }
+
+                /* Following logic is present in all further loops, just different direction:
+                 * Start from the point in the move
+                 * Move while you encouter an empty space or a friendly symbol
+                 * Empty space means there is no your second symbol capturing enemies so no flip, break
+                 * Once you encouter the friendly color - go back to start flipping everything (only enemy colors will be there)
+                 */
 
                 // Check top vertical from the desired move
                 while (x > 0)
@@ -116,8 +141,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x;  y = move.y;
                 // Check top left diagonal from the desired move
                 while (y > 0 && x > 0)
                 {
@@ -135,8 +159,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check top right diagonal from the desired move
                 while (y < 7 && x > 0)
                 {
@@ -154,8 +177,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check right horizontal from the desired move
                 while (y < 7)
                 {
@@ -171,8 +193,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check bottom right diagonal from the desired move
                 while (y < 7 && x < 7)
                 {
@@ -190,8 +211,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check bottom vertical from the desired move
                 while (x < 7)
                 {
@@ -207,8 +227,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check bottom left diagonal from the desired move
                 while (x < 7 && y > 0)
                 {
@@ -226,8 +245,7 @@ namespace ReversiAI
                         break;
                     }
                 }
-                //if (enemyInLine && allyInLine) return true;
-                enemyInLine = false; x = move.x; y = move.y;
+                x = move.x; y = move.y;
                 // Check left horizontal from the desired move
                 while (y > 0)
                 {
@@ -254,12 +272,16 @@ namespace ReversiAI
             }
         }
 
+        /// <summary>
+        /// Method to check if the move is valid
+        /// </summary>
+        /// <param name="move"> Move to check </param>
+        /// <returns> True or false </returns>
         public bool IsMoveValid(Move move)
         {
             int x = move.x;
             int y = move.y;
             bool enemyInLine = false;
-            bool allyInLine = false;
             // Check if space is already ocupied
             if (board[x, y] != '.')
             {
@@ -415,6 +437,10 @@ namespace ReversiAI
             return false;
         }
 
+        /// <summary>
+        /// Check if the board is terminal, i.e. if there are at least one move to make
+        /// </summary>
+        /// <returns> True or false </returns>
         public bool IsTerminal()
         {
             for (int i = 0; i < 8; i++)
@@ -434,6 +460,11 @@ namespace ReversiAI
             return true;
         }
 
+        /// <summary>
+        /// Get the score for the designated player on the current board
+        /// </summary>
+        /// <param name="playerSymbol"> Symbol of player for whom to count</param>
+        /// <returns> Score value </returns>
         public int GetScore(char playerSymbol)
         {
             int score = 0;
@@ -451,6 +482,10 @@ namespace ReversiAI
             return score;
         }
 
+        /// <summary>
+        /// Get all possible moves on the current board
+        /// </summary>
+        /// <returns> List of possible moves </returns>
         public List<Move> GetMoves()
         {
             List<Move> moves = new List<Move>();
